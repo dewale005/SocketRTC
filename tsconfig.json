@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",                                /* Use modern JavaScript features for emitted JavaScript */
+    "module": "Node16",                                /* Generate code for Node.js (Node16) */
+    "lib": ["ES2020"],                                 /* Include appropriate library declarations for modern JavaScript features */
+    "strict": true,                                    /* Enable all strict type-checking options */
+    "esModuleInterop": true,                           /* Enable compatibility with CommonJS modules */
+    "forceConsistentCasingInFileNames": true,           /* Ensure case consistency in import paths */
+    "resolveJsonModule": true,                         /* Allow importing JSON files as modules */
+    "moduleResolution": "node16",                       /* Use Node.js module resolution strategy (node16 or nodenext) */
+    "skipLibCheck": true,                              /* Skip type checking of all declaration files to improve build time */
+    "noImplicitAny": true,                             /* Disallow implicit 'any' type */
+    "strictNullChecks": true,                          /* Ensure null and undefined are treated distinctly */
+    "noUnusedLocals": true,                            /* Report errors for unused variables */
+    "noUnusedParameters": true,                        /* Report errors for unused function parameters */
+    "noImplicitReturns": true,                         /* Report missing return statements in functions */
+    "noFallthroughCasesInSwitch": true,                /* Report fallthrough cases in switch statements */
+    "skipDefaultLibCheck": true,                       /* Skip type checking of TypeScript's default libraries */
+    "strictFunctionTypes": true,                       /* Ensure functions are subtype-compatible in assignment */
+    "strictPropertyInitialization": true,              /* Ensure class properties are properly initialized */
+    "noEmitOnError": true,                             /* Prevent emitting files if there are type errors */
+    "outDir": "./dist",                                /* Output directory for compiled files */
+    "rootDir": "./src",                                /* Root directory of TypeScript source files */
+    "declaration": true,                               /* Generate declaration (.d.ts) files */
+    "declarationMap": true,                            /* Generate declaration map files for easier debugging */
+    "sourceMap": true,                                 /* Generate source map files for debugging */
+    "removeComments": true,                            /* Remove comments from output files */
+    "importHelpers": true,                             /* Use helpers from tslib to avoid repeating helper code */
+  },
+  "include": [
+    "src/**/*"                                         /* Include all TypeScript files in the src folder */
+  ],
+  "exclude": [
+    "node_modules",                                    /* Exclude the node_modules folder */
+    "dist"                                             /* Exclude the dist folder */
+  ]
+}
