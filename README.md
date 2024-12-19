@@ -145,7 +145,8 @@ wss.on('connection', (ws) => {
 - **`getUserMedia()`**: Captures media from the user's device (audio/video).
 
   ```javascript
-  navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+  navigator.mediaDevices
+    .getUserMedia({ video: true, audio: true })
     .then((stream) => {
       socket.emit('media-stream', stream);
     })
