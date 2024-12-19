@@ -1,172 +1,161 @@
-Here’s a **README.md** template for your **SocketRTC** project. This template will describe the project, its features, and how to use it, including its main components like **WebRTC** and **WebSocket**.
+Here is an updated **`README.md`** for the **SocketRTC** project, reflecting the latest changes and improvements in the **`SocketRTCServer`** class and overall functionality:
 
 ---
 
-# SocketRTC
+# **SocketRTC**
 
-**SocketRTC** is a real-time communication library that combines **WebRTC** and **WebSocket** technologies, providing a powerful solution for peer-to-peer communication similar to **Socket.IO**. This library allows you to create real-time applications such as video calls, chat systems, and live data streaming with minimal setup.
+**SocketRTC** is a real-time communication library that leverages **WebRTC** and **WebSocket** for peer-to-peer communication and signaling. It allows you to create real-time applications like video calls, chat systems, and live data streaming with minimal setup.
 
-### Features
+### **Features**
 
-- **WebSocket Integration**: Easily establish communication channels for signaling and message exchange.
-- **WebRTC Support**: Set up peer-to-peer video/audio communication directly between users without requiring a server for media traffic.
-- **Socket.IO-like API**: Simplified and easy-to-use API that mimics the functionality of **Socket.IO** for seamless real-time communication.
-- **Scalability**: Can be used in both simple and complex real-time applications.
-- **Custom Events**: Emit and listen to custom events for different use cases, such as chat messages, media streams, etc.
+- **WebSocket Integration**: Signaling and message exchange between clients using WebSocket.
+- **WebRTC Support**: Peer-to-peer video/audio communication.
+- **Socket.IO-like API**: Simplified and familiar API for real-time communication.
+- **Scalable Communication**: The WebSocket server can scale to multiple clients.
+- **Error Handling**: Proper error handling and logging to ensure smooth communication.
 
-### Table of Contents
+### **Table of Contents**
 
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Client-Side Example](#client-side-example)
   - [Server-Side Example](#server-side-example)
+  - [Client-Side Example](#client-side-example)
 - [API Documentation](#api-documentation)
+- [Error Handling](#error-handling)
 - [License](#license)
 
 ---
 
-## Installation
+## **Installation**
 
-To install **SocketRTC** in your project, run the following command:
+To install **SocketRTC** in your project, use the following command:
 
 ```bash
 npm install socketrtc
 ```
 
+Make sure to also install dependencies for WebRTC and WebSocket if needed:
+
+```bash
+npm install ws
+```
+
 ---
 
-## Usage
+## **Usage**
 
-### Client-Side Example
+### **Server-Side Example**
 
-Here’s how to use **SocketRTC** on the client-side for a simple peer-to-peer connection.
+**`SocketRTCServer`** class is a WebSocket server that handles the real-time communication between clients. The server listens on a specific port, accepts client connections, and broadcasts messages to other clients. Here's an example of setting up the server:
 
-```javascript
-import SocketRTC from 'socketrtc';
+```typescript
+import { SocketRTCServer } from 'socketrtc';
 
-// Initialize the client with WebSocket server URL
-const socket = new SocketRTC('ws://localhost:8080');
+// Instantiate the server and listen on port 8080
+const server = new SocketRTCServer(8080);
+console.log('WebSocket server running on ws://localhost:8080');
 
-// Connect to the WebSocket server
-socket.on('connect', () => {
-  console.log('Connected to signaling server');
+// To gracefully close the server and all connections
+server.close();
+```
+
+The server will broadcast all received messages to every other connected client except the sender. It also handles client disconnections and WebSocket errors properly.
+
+### **Client-Side Example**
+
+**`SocketRTCClient`** class connects to the WebSocket signaling server and manages WebRTC peer connections. Here's an example of how you can use the client in your application:
+
+```typescript
+import { SocketRTCClient } from 'socketrtc';
+
+const socketRTCClient = new SocketRTCClient('ws://localhost:8080');
+
+// Connect to the WebSocket signaling server
+socketRTCClient.connect();
+
+// Get local media (video + audio)
+socketRTCClient.getUserMedia();
+
+// Handle incoming media stream
+socketRTCClient.on('stream', (stream) => {
+  const localVideo = document.getElementById('localVideo');
+  localVideo.srcObject = stream;
 });
 
-// Listen for incoming peer connections
-socket.on('peer-connect', (peerId) => {
-  console.log(`New peer connected: ${peerId}`);
-});
-
-// Send a message to a peer
-socket.emit('send-message', { peerId: 'peer123', message: 'Hello!' });
-
-// Handle peer-to-peer media connections
-socket.on('peer-message', (data) => {
-  console.log('Received message from peer:', data);
-});
-
-// Listen for WebRTC events like media streaming
-socket.on('media-stream', (stream) => {
+// Handle peer-to-peer media track
+socketRTCClient.on('track', (stream) => {
   const remoteVideo = document.getElementById('remoteVideo');
   remoteVideo.srcObject = stream;
 });
+
+// Send a message using the WebRTC data channel
+socketRTCClient.sendData("Hello from the client!");
 ```
 
-### Server-Side Example
+### **Error Handling**
 
-Here’s how to set up the **SocketRTC** server to handle signaling and WebRTC connections.
+The **`SocketRTCClient`** and **`SocketRTCServer`** classes have robust error handling to ensure smooth operation. Here's a summary:
 
-```javascript
-const WebSocket = require('ws');
-const SocketRTCServer = require('socketrtc-server');
-
-// Create a WebSocket server
-const wss = new WebSocket.Server({ port: 8080 });
-
-// Set up the SocketRTC server
-const socketRTC = new SocketRTCServer(wss);
-
-// Handle new connections
-wss.on('connection', (ws) => {
-  socketRTC.on('connect', ws);
-
-  // Handle custom events like peer connection requests
-  socketRTC.on('peer-connect', (peerId) => {
-    console.log(`Peer connected: ${peerId}`);
-  });
-
-  // Handle incoming messages from clients
-  socketRTC.on('send-message', (data) => {
-    console.log(`Message from ${data.peerId}:`, data.message);
-    socketRTC.emit('peer-message', ws, { peerId: data.peerId, message: data.message });
-  });
-
-  // Handle media stream
-  socketRTC.on('media-stream', (stream) => {
-    socketRTC.emit('media-stream', ws, stream);
-  });
-});
-```
+- **WebSocket Errors**: Errors are captured and logged when the WebSocket connection fails or a client disconnects unexpectedly.
+- **WebRTC Errors**: Errors in setting remote descriptions, handling ICE candidates, or adding tracks are logged with clear messages for debugging.
+- **Message Processing**: Incoming messages are validated before being processed. If a message cannot be parsed or handled, it is logged, and the operation is skipped.
 
 ---
 
-## API Documentation
+## **API Documentation**
 
-### SocketRTC API
+### **SocketRTCClient**
 
-- **`connect()`**: Establishes a connection to the WebSocket server.
+#### `connect()`
+- **Description**: Connects the client to the signaling WebSocket server.
 
-  ```javascript
-  socket.connect();
-  ```
+#### `emit(event: string, data: any)`
+- **Description**: Sends an event to the signaling server with the provided data.
 
-- **`on(event, callback)`**: Listens for incoming events from the server or peers.
+#### `on(event: string, listener: Function)`
+- **Description**: Registers an event listener to handle incoming events such as `stream`, `track`, and `data`.
 
-  ```javascript
-  socket.on('event-name', (data) => {
-    // Handle the event
-  });
-  ```
+#### `getUserMedia()`
+- **Description**: Accesses the user's media (audio/video) and triggers the `stream` event with the local media stream.
 
-- **`emit(event, data)`**: Sends an event to the server or a specific peer.
+#### `sendData(message: string)`
+- **Description**: Sends data over the WebRTC data channel to the peer.
 
-  ```javascript
-  socket.emit('send-message', { peerId: 'peer123', message: 'Hello!' });
-  ```
-
-- **`close()`**: Closes the WebSocket connection.
-
-  ```javascript
-  socket.close();
-  ```
-
-### WebRTC Integration
-
-- **`getUserMedia()`**: Captures media from the user's device (audio/video).
-
-  ```javascript
-  navigator.mediaDevices
-    .getUserMedia({ video: true, audio: true })
-    .then((stream) => {
-      socket.emit('media-stream', stream);
-    })
-    .catch((error) => {
-      console.log('Error accessing media devices:', error);
-    });
-  ```
-
-- **`addStream(peerId, stream)`**: Adds a stream to a peer connection.
-
-  ```javascript
-  socket.addStream('peer123', myStream);
-  ```
+#### `close()`
+- **Description**: Closes the WebSocket connection and the peer connection.
 
 ---
 
-## License
+### **SocketRTCServer**
+
+#### `constructor(port: number)`
+- **Description**: Initializes the WebSocket server on the specified port.
+
+#### `close()`
+- **Description**: Gracefully shuts down the WebSocket server and disconnects all connected clients.
+
+---
+
+## **Error Handling**
+
+**SocketRTC** has comprehensive error handling mechanisms for both WebSocket and WebRTC operations. All errors are logged with clear messages to facilitate debugging:
+
+- **WebSocket Errors**: Errors in establishing or maintaining the WebSocket connection are captured and logged.
+- **WebRTC Errors**: Errors in setting remote descriptions, creating offers/answers, or managing ICE candidates are logged for debugging.
+- **Message Handling Errors**: If an incoming signaling message cannot be parsed or processed, an error is logged, and the operation is skipped.
+
+---
+
+## **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-This **README** template provides a professional overview of **SocketRTC**, including how to install, use, and integrate it into your project for real-time communication using **WebRTC** and **WebSocket**. If you need more detailed examples or have any additional features, feel free to expand upon this!
+### **Conclusion**
+
+This update improves the **SocketRTC** package by optimizing the WebSocket server and client for better scalability, maintainability, and error handling. The updated API makes it easier to set up peer-to-peer WebRTC communication while providing robust event management and error logging.
+
+You can now build real-time communication applications with features like video/audio calls, messaging, and more, using the simple and extensible **SocketRTC** library.
+
+Let me know if you need further modifications or additional features!

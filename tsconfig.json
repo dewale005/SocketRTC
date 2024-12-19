@@ -30,7 +30,7 @@
     "removeComments": true /* Remove comments from output files */,
     "importHelpers": true /* Use helpers from tslib to avoid repeating helper code */
   },
-  "include": ["src/**/*" /* Include all TypeScript files in the src folder */],
+  "include": ["src/**/*.ts" /* Include all TypeScript files in the src folder */],
   "exclude": [
     "node_modules" /* Exclude the node_modules folder */,
     "dist" /* Exclude the dist folder */
