@@ -6,8 +6,8 @@ import WebSocket, { Server, WebSocket as WSClient } from 'ws';
  * the server can scale and handle multiple connections reliably.
  */
 export class SocketRTCServer {
-  private wss: Server;  // WebSocket server instance
-  private clients: Set<WSClient>;  // Set of connected clients
+  private wss: Server; // WebSocket server instance
+  private clients: Set<WSClient>; // Set of connected clients
 
   /**
    * Initializes the WebSocket server and handles client connections.

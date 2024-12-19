@@ -2,7 +2,10 @@
   "compilerOptions": {
     "target": "ES2020" /* Use modern JavaScript features for emitted JavaScript */,
     "module": "Node16" /* Generate code for Node.js (Node16) */,
-    "lib": ["dom", "ES2020"] /* Include appropriate library declarations for modern JavaScript features */,
+    "lib": [
+      "dom",
+      "ES2020"
+    ] /* Include appropriate library declarations for modern JavaScript features */,
     "strict": true /* Enable all strict type-checking options */,
     "esModuleInterop": true /* Enable compatibility with CommonJS modules */,
     "forceConsistentCasingInFileNames": true /* Ensure case consistency in import paths */,
