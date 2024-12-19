@@ -1,0 +1,86 @@
+# Node.js
+node_modules/
+
+# TypeScript
+dist/
+*.tsbuildinfo
+*.d.ts
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+jspm_packages/
+
+# Build outputs
+/dist/
+/build/
+
+/*.tgz
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor directories and files
+.vscode/
+.idea/
+*.swp
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Debugger configurations
+.vscode/launch.json
+.vscode/tasks.json
+
+# NPM package-lock and yarn.lock
+package-lock.json
+yarn.lock
+
+# Test coverage directories
+coverage/
+.nyc_output/
+
+# ESLint configuration cache
+.eslintcache
+
+# Prettier configuration cache
+.prettier_cache
+
+# Temporary files
+*.bak
+*.tmp
+
+# JetBrains IDE project files
+.idea/
+*.iml
+
+# Visual Studio Code workspace settings
+.vscode/
+
+# Next.js
+.next/
+out/
+
+# SvelteKit (if using Svelte)
+.svelte-kit/
+
+# TypeORM
+ormconfig.js
+ormconfig.json
+
+# Generated Typescript typings
+typings/
+
+# Google Chrome Lighthouse reports
+.lighthouse/
+
+# NPM/Yarn global directory files
+.yarn/
