@@ -89,7 +89,7 @@ socketRTCClient.on('track', (stream) => {
 });
 
 // Send a message using the WebRTC data channel
-socketRTCClient.sendData("Hello from the client!");
+socketRTCClient.sendData('Hello from the client!');
 ```
 
 ### **Error Handling**
@@ -107,21 +107,27 @@ The **`SocketRTCClient`** and **`SocketRTCServer`** classes have robust error ha
 ### **SocketRTCClient**
 
 #### `connect()`
+
 - **Description**: Connects the client to the signaling WebSocket server.
 
 #### `emit(event: string, data: any)`
+
 - **Description**: Sends an event to the signaling server with the provided data.
 
 #### `on(event: string, listener: Function)`
+
 - **Description**: Registers an event listener to handle incoming events such as `stream`, `track`, and `data`.
 
 #### `getUserMedia()`
+
 - **Description**: Accesses the user's media (audio/video) and triggers the `stream` event with the local media stream.
 
 #### `sendData(message: string)`
+
 - **Description**: Sends data over the WebRTC data channel to the peer.
 
 #### `close()`
+
 - **Description**: Closes the WebSocket connection and the peer connection.
 
 ---
@@ -129,9 +135,11 @@ The **`SocketRTCClient`** and **`SocketRTCServer`** classes have robust error ha
 ### **SocketRTCServer**
 
 #### `constructor(port: number)`
+
 - **Description**: Initializes the WebSocket server on the specified port.
 
 #### `close()`
+
 - **Description**: Gracefully shuts down the WebSocket server and disconnects all connected clients.
 
 ---

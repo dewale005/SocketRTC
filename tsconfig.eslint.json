@@ -1,8 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "include": [
-    "eslint.config.js",
-    "commitlint.config.js",
-    "src/**/*"
-  ]
+  "include": ["eslint.config.js", "commitlint.config.js", "src/**/*"]
 }
